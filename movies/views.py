@@ -1,9 +1,8 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from .models import Movie
-from django.http import Http404
-
-# Create your views here.
+from django.http import Http404, HttpResponseServerError
 from django.http import HttpResponse
+
 # Create your views here.
 def index(request):
     newest_movies = Movie.objects.order_by('-release_date')[:15]
@@ -17,3 +16,11 @@ def show(request, movie_id):
     except Movie.DoesNotExist:
         raise Http404("Movie does not exist")
     return render(request, 'movies/show.html', {'movie': movie})
+
+def delete(request, movie_id):
+    if request.method == "GET":
+        try:
+            Movie.objects.filter(pk=movie_id).delete()
+        except:
+            raise HttpResponseServerError("Delete movie was fail")
+        return redirect("/movies")
