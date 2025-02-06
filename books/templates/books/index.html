@@ -1,0 +1,13 @@
+<h1>Hi Bryan Here is Newest Books<h1>
+{% if newest_books %}
+<ul>
+{% for book in newest_books %}
+<li>
+    <a href="{% url 'books:show' book.id %}">{{ book.title }}</a>
+    </form>
+</li>
+{% endfor %}
+</ul>
+{% else %}
+<p>There are no books recorded.</p>
+{% endif %}
